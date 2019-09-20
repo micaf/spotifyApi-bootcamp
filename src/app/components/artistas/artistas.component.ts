@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {SpotifyService} from 'src/app/services/spotifyserv.service';
 import { ActivatedRoute } from '@angular/router';
 import {PrivateService} from '../../services/private.service';
-import {MatSortModule} from '@angular/material/sort';
+
 
 @Component({
   selector: 'app-artistas',
@@ -12,9 +12,11 @@ import {MatSortModule} from '@angular/material/sort';
 
 export class ArtistasComponent {
   artista: any = {};
-  topTracks: any[] = [];
+  topTracks: any = [];
   loadingArtist: boolean;
   list: any[] = [];
+  
+
   constructor(private router: ActivatedRoute,
               private spotify: SpotifyService,
               private tracklist:PrivateService ) {
@@ -31,6 +33,7 @@ export class ArtistasComponent {
   }
 ngOnInit(){
   this.tracklist.tracksSelect.subscribe(data => this.list = data)
+
 }
 
 getArtista( id: string ) {
@@ -50,9 +53,8 @@ getArtista( id: string ) {
 getTopTracks( id: string ) {
 
   this.spotify.getTopTracks( id )
-          .subscribe( topTracks => {
-            console.log(topTracks);
-            this.topTracks = topTracks;
+          .subscribe( data => {
+            this.topTracks = data.map
           });
 
 }
@@ -67,13 +69,11 @@ saveTracks(track){
 deleteTracks(track){
     const index = this.list.indexOf(track);
     if (index > -1) {
-      this.list.splice(index, 1);
+      return this.list.splice(index, 1);
   }else{
     alert("Esta canción no se encuentra en tu favoritos")
   }} 
 newList() {
   this.tracklist.addTracks(this.list)
-}
+}}
 
-  
-}
