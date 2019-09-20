@@ -38,7 +38,7 @@
           </thead>
     
           <tbody>
-            <tr *ngFor="let track of list"> 
+            <tr *ngFor="let track of topTracks"> 
               <td> <button type="button" class="btn btn-dark" (click)=saveTracks(track)>Agregar a Favoritos</button><button type="button" class="btn btn-secondary" (click)=deleteTracks(track)>Eliminar de Favoritos</button> <td> 
                 <img [src]="track.album.images | noimage" class="img-thumb" height="90px" width="90px"/>
               </td>
