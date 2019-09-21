@@ -1,4 +1,8 @@
-td{
-    text-align: center;
-    color: white;
+table {
+    color:white;
+  }
+
+th{
+    width:40px;
 }
+  

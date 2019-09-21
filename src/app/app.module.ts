@@ -13,7 +13,9 @@ import { TarjetasComponent } from './components/tarjetas/tarjetas.component';
 import { DomseguroPipe } from './pipes/domseguro.pipe';
 import { NoimagePipe } from './pipes/noimage.pipe';
 import { TracklistComponent } from './components/tracklist/tracklist.component';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -26,12 +28,16 @@ import { TracklistComponent } from './components/tracklist/tracklist.component';
     TarjetasComponent,
     DomseguroPipe,
     NoimagePipe,
-    TracklistComponent,
+    TracklistComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatSortModule,
+    MatTableModule,
+  
   ],
   providers: [SpotifyService],
   bootstrap: [AppComponent]

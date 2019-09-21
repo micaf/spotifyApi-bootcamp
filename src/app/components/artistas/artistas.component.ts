@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import {SpotifyService} from 'src/app/services/spotifyserv.service';
 import { ActivatedRoute } from '@angular/router';
 import {PrivateService} from '../../services/private.service';
-
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-artistas',
@@ -12,11 +13,10 @@ import {PrivateService} from '../../services/private.service';
 
 export class ArtistasComponent {
   artista: any = {};
-  topTracks: any = [];
   loadingArtist: boolean;
   list: any[] = [];
   
-
+  
   constructor(private router: ActivatedRoute,
               private spotify: SpotifyService,
               private tracklist:PrivateService ) {
@@ -28,14 +28,13 @@ export class ArtistasComponent {
       this.getArtista( params['id'] );
       this.getTopTracks( params['id'] );
      
-    });
+    });}
 
-  }
-ngOnInit(){
-  this.tracklist.tracksSelect.subscribe(data => this.list = data)
+    displayedColumns: string[]  = ["favoritos","album.images","album.name","name","duration_ms", "uri"]
+    @ViewChild(MatSort, {static:true}) sort: MatSort;
+    dataSource: MatTableDataSource<unknown>;
 
-}
-
+  
 getArtista( id: string ) {
 
   this.loadingArtist = true;
@@ -54,9 +53,15 @@ getTopTracks( id: string ) {
 
   this.spotify.getTopTracks( id )
           .subscribe( data => {
-            this.topTracks = data
+            this.dataSource = new MatTableDataSource(data);
+            this.dataSource.sort = this.sort;
           });
 
+}
+
+ngOnInit(){
+  this.tracklist.tracksSelect.subscribe(data => this.list = data)
+  
 }
 
 
@@ -75,5 +80,6 @@ deleteTracks(track){
   }} 
 newList() {
   this.tracklist.addTracks(this.list)
-}}
+}
+}
 
