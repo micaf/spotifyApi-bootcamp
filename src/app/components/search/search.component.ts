@@ -11,7 +11,6 @@ import { debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class SearchComponent  {
   artistas = [];
   loading: boolean;
- 
   constructor(private spotify: SpotifyService) { }
   private searchSub$ = new Subject<string>();
 
@@ -28,10 +27,10 @@ ngOnInit() {
     .subscribe( (data: any) => {
     console.log(data);
     this.artistas = data;
-    this.loading = false;
-  })}
+    this.loading=false
+    }
+)}
   )}}
-
 
 
 
