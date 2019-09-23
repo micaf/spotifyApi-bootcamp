@@ -1,9 +1,10 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, TemplateRef} from '@angular/core';
 import {SpotifyService} from 'src/app/services/spotifyserv.service';
 import { ActivatedRoute } from '@angular/router';
 import {PrivateService} from '../../services/private.service';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+
 
 @Component({
   selector: 'app-artistas',
@@ -15,8 +16,7 @@ export class ArtistasComponent {
   artista: any = {};
   loadingArtist: boolean;
   list: any[] = [];
-  
-  
+  checked: boolean;
   constructor(private router: ActivatedRoute,
               private spotify: SpotifyService,
               private tracklist:PrivateService ) {
@@ -34,7 +34,11 @@ export class ArtistasComponent {
     @ViewChild(MatSort, {static:true}) sort: MatSort;
     dataSource: MatTableDataSource<unknown>;
 
-  
+    ngOnInit(){
+      this.tracklist.tracksSelect.subscribe(data => this.list = data)
+      
+    }
+
 getArtista( id: string ) {
 
   this.loadingArtist = true;
@@ -59,25 +63,32 @@ getTopTracks( id: string ) {
 
 }
 
-ngOnInit(){
-  this.tracklist.tracksSelect.subscribe(data => this.list = data)
-  
-}
 
+
+checkFavourites(track){
+  if (this.list.includes(track)==false){
+
+     return false;
+  }else{
+     return true;
+  }
+}
 
 saveTracks(track){
   if(this.list.includes(track)==false){
-    this.list.push(track);
-  }else{
-    alert("La canción ya se encuentra en tu favoritos!")
-  }}
+    alert("Esta canción ha sido agregada a los favoritos")
+    return this.list.push(track);}
+    else{
+      return alert("Esta canción ya se encuentra en tus favoritos")
+    }}
+  
 deleteTracks(track){
     const index = this.list.indexOf(track);
     if (index > -1) {
-      return this.list.splice(index, 1);
-  }else{
-    alert("Esta canción no se encuentra en tu favoritos")
-  }} 
+     alert("Esta canción ha sido eliminada de tus favoritos")
+     return this.list.splice(index, 1);}
+ }
+
 newList() {
   this.tracklist.addTracks(this.list)
 }

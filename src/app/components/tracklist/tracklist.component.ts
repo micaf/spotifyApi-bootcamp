@@ -20,22 +20,25 @@ export class TracklistComponent implements OnInit {
 
   constructor(private spotify:SpotifyService,
               private tracklist:PrivateService) { }
+ngAfterContentChecked(){
+  this.dataSource = new MatTableDataSource(this.list);
+  this.dataSource.sort = this.sort;
+}
 
 
+deleteTracks(track){
+      const index = this.list.indexOf(track);
+            if (index > -1) {
+              this.list.splice(index, 1);
+              }}
   
 ngOnInit() {
-        this.tracklist.tracksSelect.subscribe(data => 
-          {this.list = data;
-        localStorage.setItem("tracklist", JSON.stringify(this.list))})
-        this.dataSource = new MatTableDataSource(this.list);
-        this.dataSource.sort = this.sort;
+        this.tracklist.tracksSelect.subscribe(data => this.list = data);
+        localStorage.setItem("tracklist", JSON.stringify(this.list))
+        
           }
   
-deleteTracks(track){
-  const index = this.list.indexOf(track);
-  if (index > -1) {
-    this.list.splice(index, 1);
-}}
+
 
 }
 
